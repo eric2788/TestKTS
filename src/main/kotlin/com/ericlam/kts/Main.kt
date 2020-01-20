@@ -1,8 +1,6 @@
 package com.ericlam.kts
 
 import com.ericlam.kts.dsl.invoke
-import com.ericlam.kts.dsl.set
-import kotlinx.coroutines.*
 import java.io.File
 import javax.script.ScriptEngineManager
 
@@ -34,7 +32,6 @@ fun main() {
         println("=== ${it.name} ===")
     }
     println("kts Spent: ${((System.currentTimeMillis() - time) / 1000.0)}s")
-
     //dslTest()
 }
 

@@ -1,5 +1,6 @@
 package com.ericlam.kts.dsl
 
+import org.jetbrains.kotlin.script.jsr223.KotlinStandardJsr223ScriptTemplate
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 
@@ -43,8 +44,32 @@ infix fun Create.map(run: MapBuilder.() -> Unit): MutableMap<Any, Any> {
 
 object Add
 
-infix fun String.set(any: Any){
+infix fun <T : KotlinStandardJsr223ScriptTemplate> T.pool(run: ScriptVariables.() -> Unit) {
+    val script = scriptMap[this] ?: ScriptVariables().also { scriptMap[this] = it }
+    println("Assigning values from $this")
+    run(script)
+}
 
+infix fun <T : KotlinStandardJsr223ScriptTemplate> String.from(t: T): Any? {
+    println("Getting $this from $t")
+    return scriptMap[t]?.variables?.get(this)
+}
+
+inline infix fun <reified T> String.abc(any: T): String {
+    return "$this from $any"
+}
+
+
+private val scriptMap: MutableMap<KotlinStandardJsr223ScriptTemplate, ScriptVariables> = ConcurrentHashMap()
+
+class ScriptVariables {
+    private val cache: MutableMap<String, Any> = ConcurrentHashMap()
+    val variables: Map<String, Any>
+        get() = cache
+
+    infix fun String.set(any: Any) {
+        cache[this] = any
+    }
 }
 
 

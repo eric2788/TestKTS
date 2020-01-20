@@ -1,41 +1,12 @@
-Common println "hello world"
 
-val arr = Create array {
-    Add num 1
-    Add num 3
-    Add double 2.0
-    Add string "abc"
-    Add string "xyz"
-    Add bool false
+this pool {
+    "a" set 123
+    "b" set 456
+    "c" set 789
 }
 
-Common println arr
+Common println "a = ${"a" from this}"
 
-val pickme = 123
+Common println "b = ${"b" from this}"
 
-val map = Create map {
-    1 value "abc"
-    2 value 333
-    1.2 value "abc"
-    "a" value "xyz"
-    "ww" value 222
-    "d" value false
-    false value "xxx"
-}
-
-Common println map
-
-
-
-/*
-Register command "hello" execute  {
-    val name = this get 1 or "noone"
-    Common println "Hello $name !!"
-}
-
-Register command "array" execute {
-    Common println arr
-}
-
- */
-
+Common println "c = ${"c" from this}"
