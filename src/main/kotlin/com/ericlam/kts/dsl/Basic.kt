@@ -7,10 +7,23 @@ import java.util.concurrent.ConcurrentMap
 private val commands: ConcurrentMap<String, Array<String>.() -> Unit> = ConcurrentHashMap()
 
 object Register
-
 object Create
-
+object Add
 object Common
+object Logic
+
+infix fun Boolean.then(run: () -> Unit): Boolean {
+    if (this) run()
+    return this
+}
+
+infix fun Boolean.elseThen(run: () -> Unit){
+    if (!this) run()
+}
+
+infix fun <T> Iterable<T>.random(size: Int): Iterable<T>{
+    return this.shuffled().take(size)
+}
 
 infix fun Common.println(any: Any?) {
     kotlin.io.println(any)
@@ -41,8 +54,6 @@ infix fun Create.map(run: MapBuilder.() -> Unit): MutableMap<Any, Any> {
     run(map)
     return map
 }
-
-object Add
 
 infix fun <T : KotlinStandardJsr223ScriptTemplate> T.pool(run: ScriptVariables.() -> Unit) {
     val script = scriptMap[this] ?: ScriptVariables().also { scriptMap[this] = it }

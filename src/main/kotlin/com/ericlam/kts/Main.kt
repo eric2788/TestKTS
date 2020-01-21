@@ -1,10 +1,13 @@
 package com.ericlam.kts
 
+
 import com.ericlam.kts.dsl.invoke
 import java.io.File
+import java.util.regex.Pattern
 import javax.script.ScriptEngineManager
 
 fun main() {
+
     val time = System.currentTimeMillis()
     val packages = """
         import kotlin.*
@@ -26,13 +29,24 @@ fun main() {
     val engine = ScriptEngineManager().getEngineByExtension("kts")
     folder.listFiles()?.forEach {
         println("=== ${it.name} ===")
-        val kts = it.readLines().joinToString("\n")
+        var kts = it.readLines().joinToString("\n")
+        RegexPattern.assignPattern.findAll(kts).forEach {mr ->
+            kts = kts.replace(mr.value, "private val ${mr.value}")
+        }
+        RegexPattern.globalAssignPattern.findAll(kts).forEach {mr ->
+            kts = kts.replace(mr.value, mr.value.removePrefix("global private "))
+        }
         val script = "$packages\n$kts"
         engine.eval(script)
         println("=== ${it.name} ===")
     }
     println("kts Spent: ${((System.currentTimeMillis() - time) / 1000.0)}s")
     //dslTest()
+}
+
+object RegexPattern {
+    val assignPattern = Regex("\\w\\s*=\\s*\\w")
+    val globalAssignPattern = Regex("global private val\\s\\w\\s*=\\s*\\w")
 }
 
 fun dslTest() {
