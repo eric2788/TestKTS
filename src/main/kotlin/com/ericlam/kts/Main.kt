@@ -1,9 +1,11 @@
 package com.ericlam.kts
 
 
+import com.ericlam.kts.dsl.Add
+import com.ericlam.kts.dsl.Create
+import com.ericlam.kts.dsl.array
 import com.ericlam.kts.dsl.invoke
 import java.io.File
-import java.util.regex.Pattern
 import javax.script.ScriptEngineManager
 
 fun main() {
@@ -29,13 +31,7 @@ fun main() {
     val engine = ScriptEngineManager().getEngineByExtension("kts")
     folder.listFiles()?.forEach {
         println("=== ${it.name} ===")
-        var kts = it.readLines().joinToString("\n")
-        RegexPattern.assignPattern.findAll(kts).forEach {mr ->
-            kts = kts.replace(mr.value, "private val ${mr.value}")
-        }
-        RegexPattern.globalAssignPattern.findAll(kts).forEach {mr ->
-            kts = kts.replace(mr.value, mr.value.removePrefix("global private "))
-        }
+        val kts = it.readLines().joinToString("\n")
         val script = "$packages\n$kts"
         engine.eval(script)
         println("=== ${it.name} ===")
@@ -50,6 +46,12 @@ object RegexPattern {
 }
 
 fun dslTest() {
+    Create array {
+        Add num 1
+        Add double 2.2
+        Add string "abc"
+        Add bool false
+    }
     println("=== kotlin runtime ===")
     while (true) {
         val line = readLine() ?: continue

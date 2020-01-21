@@ -85,7 +85,7 @@ class ScriptVariables {
 
 
 class MapBuilder : LinkedHashMap<Any, Any>() {
-    infix fun Any.value(any: Any) {
+    infix fun Any.mapTo(any: Any) {
         this@MapBuilder += (this to any)
     }
 }

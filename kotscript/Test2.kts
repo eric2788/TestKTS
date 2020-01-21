@@ -1,16 +1,4 @@
-this pool {
-    "a" set "abc"
-    "b" set "bcd"
-    "c" set "xyz"
-}
-
-Common println "a = ${"a" from this}"
-
-Common println "b = ${"b" from this}"
-
-Common println "c = ${"c" from this}"
-
-val a = 1..10 random 2
+private val a = 1..10 random 2 //create iterable and get random of 2 numbers
 a loop {
     val b = this > 5
     b then {
@@ -18,4 +6,8 @@ a loop {
     } elseThen {
         Common println "$this is <= 5"
     }
+}
+
+1..10 loop {
+    Common println "No. $this"
 }
